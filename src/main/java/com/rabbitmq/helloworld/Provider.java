@@ -3,6 +3,7 @@ package com.rabbitmq.helloworld;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.utils.RabbitMQUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -13,19 +14,20 @@ import java.util.concurrent.TimeoutException;
 public class Provider {
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        // 创建连接mq的连接工厂对象
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        // 设置mq的ip地址
-        connectionFactory.setHost("192.168.31.210");
-        // 设置端口号
-        connectionFactory.setPort(5672);
-        // 设置用户名密码
-        connectionFactory.setUsername("ems");
-        connectionFactory.setPassword("123");
-        // 设置连接的虚拟主机
-        connectionFactory.setVirtualHost("/ems");
-        // 获取连接对象
-        Connection connection = connectionFactory.newConnection();
+//        // 创建连接mq的连接工厂对象
+//        ConnectionFactory connectionFactory = new ConnectionFactory();
+//        // 设置mq的ip地址
+//        connectionFactory.setHost("192.168.31.210");
+//        // 设置端口号
+//        connectionFactory.setPort(5672);
+//        // 设置用户名密码
+//        connectionFactory.setUsername("ems");
+//        connectionFactory.setPassword("123");
+//        // 设置连接的虚拟主机
+//        connectionFactory.setVirtualHost("/ems");
+//        // 获取连接对象
+//        Connection connection = connectionFactory.newConnection();
+        Connection connection = RabbitMQUtils.getConnection();
         Channel channel = connection.createChannel();
         // 通道去绑定对应的消息队列
         // 参数1：队列名称，如果队列不存在则自动创建
@@ -40,5 +42,6 @@ public class Provider {
         // 参数3： 发布消息时的一些属性
         // 参数4： 发布的具体消息
         channel.basicPublish("","hello",null,"hello rabbitmq".getBytes());
+        RabbitMQUtils.closeConnectionAndChannel(channel,connection);
     }
 }
