@@ -16,7 +16,7 @@ public class Provider {
         Channel channel = connection.createChannel();
         channel.queueDeclare("work",true,false,false,null);
         // 生产消息
-        for (int i=0;i<10;i++) {
+        for (int i=1;i<=20;i++) {
             channel.basicPublish("","work", null,(i+"hello work queue").getBytes());
         }
         // 关闭资源
